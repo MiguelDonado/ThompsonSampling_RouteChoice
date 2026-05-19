@@ -1,7 +1,7 @@
 from scenario import Scenario
 from environment import Environment
 from config import config
-from data_science import draw_distributions
+from data_science import draw_distributions, plot_convergence_post_mean_meantt
 import numpy as np
 from utils import approximate_reward_distributions, perform_simulation
 from thompson_sampling import RouteThompsonSampler
@@ -48,6 +48,8 @@ def main():
 
         # update posterior
         routes[chosen_idx].update_posterior(agent_tt)
+
+    plot_convergence_post_mean_meantt(R=routes)
 
 
 if __name__ == "__main__":

@@ -8,6 +8,9 @@ SUMO_DIR = BASE_DIR / "sumo"
 DATA_DIR = BASE_DIR / "data"
 REWARD_DISTRIBUTIONS_DIR = BASE_DIR / "figures" / "reward_distributions"
 POST_AVG_TT_DIR = BASE_DIR / "figures" / "posterior_avg_tt"
+CONVERGENCE_POST_MEANS = (
+    BASE_DIR / "figures" / "convergence_post_mean" / "convergence_post_mean.png"
+)
 TRAVEL_TIMES_MONTECARLO = DATA_DIR / "processed"
 
 # Files

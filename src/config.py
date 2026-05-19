@@ -69,7 +69,7 @@ class Config:
     ##############
     ### Thompson-sampling
     ##############
-    n_episodes_thompson_sampling: int = 2000
+    n_episodes_thompson_sampling: int = 20
     true_alpha: float = 1.5  # Parameter gamma distribution
     # Non-informative prior over beta parameter of Gamma
     prior_a: float = 1

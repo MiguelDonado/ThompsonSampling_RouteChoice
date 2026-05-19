@@ -3,7 +3,7 @@ import numpy as np
 from scipy.stats import skew
 import seaborn as sns
 import matplotlib.pyplot as plt
-from paths import POST_AVG_TT_DIR
+from paths import POST_AVG_TT_DIR, CONVERGENCE_POST_MEANS
 from config import config
 
 
@@ -55,3 +55,19 @@ def draw_distributions(R, i, n_samples):
         plt.ylabel("Density", fontsize=20)
         plt.savefig(path, dpi=300, bbox_inches="tight")
         plt.close()
+
+
+def plot_convergence_post_mean_meantt(R):
+    path = CONVERGENCE_POST_MEANS
+
+    plt.figure(figsize=(5, 5))
+    true_means = [r.true_mean_tt for r in R]
+    posterior_means = [r.posterior_mean_meantt for r in R]
+
+    plt.scatter(true_means, posterior_means)
+    plt.plot(true_means, true_means, color="k", alpha=0.5, linestyle="--")
+
+    plt.xlabel("True Mean", fontsize=20)
+    plt.ylabel("Posterior Mean", fontsize=20)
+    plt.savefig(path, dpi=300, bbox_inches="tight")
+    plt.close()

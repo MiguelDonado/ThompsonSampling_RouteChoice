@@ -36,4 +36,5 @@ class RouteThompsonSampler:
     def get_samples_post_avg_tt(self, n_samples):
         sampled_betas = self.sample_beta_from_posterior(n_samples)
         expected_time_samples = self.alpha / sampled_betas
+        self.posterior_mean_meantt = np.mean(expected_time_samples)
         return expected_time_samples
