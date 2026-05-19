@@ -4,6 +4,7 @@ from scipy.stats import skew
 import seaborn as sns
 import matplotlib.pyplot as plt
 from paths import POST_AVG_TT_DIR
+from config import config
 
 
 def plot_histogram_and_kde_tt(tt, path):
@@ -41,7 +42,7 @@ def plot_histogram_and_kde_tt(tt, path):
 
 def draw_distributions(R, i, n_samples):
     if i < 10 or (i < 100 and (i + 1) % 10 == 0) or ((i + 1) % 100 == 0):
-        path = POST_AVG_TT_DIR / f"post_avg_tt_{i}.png"
+        path = POST_AVG_TT_DIR / config.name_network / f"post_avg_tt_{i}.png"
         for r in R:
             samples = r.get_samples_post_avg_tt(n_samples)
             sns.kdeplot(samples, fill=True)

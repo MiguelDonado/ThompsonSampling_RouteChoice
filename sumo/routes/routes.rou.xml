@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- generated on 2026-05-19 18:51:06.068767 by Eclipse SUMO randomTrips.py v1.26.0
+<!-- generated on 2026-05-19 19:26:20.939163 by Eclipse SUMO randomTrips.py v1.26.0
 <configuration>
-    <net-file value="/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st.net.xml"/>
+    <net-file value="/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st_koh.net.xml"/>
     <output-trip-file value="/home/miguel/6.Projects/BayesianFinalProject/sumo/routes/routes.rou.xml"/>
     <seed value="9417"/>
     <end value="520.0"/>

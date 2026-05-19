@@ -1,4 +1,5 @@
 import numpy as np
+from config import config
 
 
 class RouteThompsonSampler:
@@ -8,8 +9,8 @@ class RouteThompsonSampler:
         self.true_mean_tt = true_mean_tt
 
         # PRIOR for beta
-        self.prior_a = 1
-        self.prior_b = 1
+        self.prior_a = config.prior_a
+        self.prior_b = config.prior_b
 
         # POSTERIOR parameters
         self.post_a = self.prior_a

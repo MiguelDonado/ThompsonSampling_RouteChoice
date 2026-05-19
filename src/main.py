@@ -5,6 +5,7 @@ from data_science import draw_distributions
 import numpy as np
 from utils import approximate_reward_distributions, perform_simulation
 from thompson_sampling import RouteThompsonSampler
+from pathlib import Path
 
 # Reproducibility
 rng = np.random.default_rng(config.seed)
@@ -14,6 +15,8 @@ seeds = rng.integers(
 
 
 def main():
+    config.name_network = Path(config.network).name.replace(".net.xml", "")
+
     # Monte Carlo approximation travel times distribution of routes
     approximate_reward_distributions(seeds)
 

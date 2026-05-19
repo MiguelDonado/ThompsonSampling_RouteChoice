@@ -8,7 +8,7 @@ from paths import REWARD_DISTRIBUTIONS_DIR
 def approximate_reward_distributions(seeds):
     print("Monte Carlo Approximation of reward distributions\n")
     for idx_route, _ in enumerate(config.routes):
-        path = REWARD_DISTRIBUTIONS_DIR / f"route_{idx_route}.png"
+        path = REWARD_DISTRIBUTIONS_DIR / config.name_network / f"route_{idx_route}.png"
         travel_times = []
 
         for episode in range(1, config.n_episodes + 1):
