@@ -2,9 +2,10 @@ import numpy as np
 
 
 class RouteThompsonSampler:
-    def __init__(self, alpha):
+    def __init__(self, alpha, true_mean_tt):
 
         self.alpha = alpha
+        self.true_mean_tt = true_mean_tt
 
         # PRIOR for beta
         self.prior_a = 1

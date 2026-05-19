@@ -3,9 +3,10 @@ import numpy as np
 from scipy.stats import skew
 import seaborn as sns
 import matplotlib.pyplot as plt
+from paths import POST_AVG_TT_DIR
 
 
-def plot_histogram_tt(tt, path):
+def plot_histogram_and_kde_tt(tt, path):
     mean = np.mean(tt)
     std = np.std(tt)
 
@@ -17,7 +18,7 @@ def plot_histogram_tt(tt, path):
     q90 = np.percentile(tt, 90)
     q95 = np.percentile(tt, 95)
 
-    plt.hist(tt, bins="fd")
+    sns.histplot(tt, bins="fd", stat="density", kde=True)
 
     # Legend entries only
     plt.plot([], [], " ", label=f"Mean = {mean:.2f}")
@@ -40,13 +41,14 @@ def plot_histogram_tt(tt, path):
 
 def draw_distributions(R, i, n_samples):
     if i < 10 or (i < 100 and (i + 1) % 10 == 0) or ((i + 1) % 100 == 0):
+        path = POST_AVG_TT_DIR / f"post_avg_tt_{i}.png"
         for r in R:
             samples = r.get_samples_post_avg_tt(n_samples)
             sns.kdeplot(samples, fill=True)
         plt.title(f"Iterarion {i}", fontsize=20)
-        plt.legend([f"route={idx}" for idx, _ in enumerate(R)], fontsize=16)
+        plt.legend([f"true_avg={r.true_mean_tt}" for r in R], fontsize=16)
         plt.xlim(50, 200)
         plt.xlabel("Average Travel Time", fontsize=20)
         plt.ylabel("Density", fontsize=20)
-        plt.show()
+        plt.savefig(path, dpi=300, bbox_inches="tight")
         plt.close()

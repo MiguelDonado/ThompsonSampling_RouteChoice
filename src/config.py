@@ -8,8 +8,8 @@ from enum import Enum
     OD: 
         1-7
     Routes:
-        ["E1_2_EB","E2_3_EB","E3_4_EB","E4_7_NWB","E7_8_NEB"],
         ["E1_2_EB","E2_6_NB","E6_7_NEB","E7_8_NEB"],
+        ["E1_2_EB","E2_3_EB","E3_4_EB","E4_7_NWB","E7_8_NEB"],
         ["E1_2_EB","E2_3_EB","E3_6_NWB","E6_7_NEB","E7_8_NEB"]
     Duration: 
         520
@@ -36,21 +36,23 @@ class Config:
     duration: int = 520
     n_veh: int = 150
     routes: list[list[str]] = field(default_factory=list)
-    n_episodes: int = 1
+    true_means_tt: list[list[float]] = field(default_factory=list)
+    n_episodes: int = 10
     seed: int = 42
 
     # Agent
     departure_time: int = 360
 
     # Thompson sampling
-    n_episodes_thompson_sampling: int = 100
+    n_episodes_thompson_sampling: int = 1000
     true_alpha: float = 1.5
 
 
 config = Config(
     routes=[
-        ["E1_2_EB", "E2_3_EB", "E3_4_EB", "E4_7_NWB", "E7_8_NEB"],
         ["E1_2_EB", "E2_6_NB", "E6_7_NEB", "E7_8_NEB"],
+        ["E1_2_EB", "E2_3_EB", "E3_4_EB", "E4_7_NWB", "E7_8_NEB"],
         ["E1_2_EB", "E2_3_EB", "E3_6_NWB", "E6_7_NEB", "E7_8_NEB"],
-    ]
+    ],
+    true_means_tt=[64.5, 72.5, 85],
 )

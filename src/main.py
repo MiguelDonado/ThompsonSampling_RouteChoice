@@ -1,7 +1,7 @@
 from scenario import Scenario
 from environment import Environment
 from config import config
-from data_science import plot_histogram_tt, draw_distributions
+from data_science import draw_distributions
 import numpy as np
 from utils import approximate_reward_distributions, perform_simulation
 from thompson_sampling import RouteThompsonSampler
@@ -18,7 +18,12 @@ def main():
     approximate_reward_distributions(seeds)
 
     # Initialize Route Thompson Sampler
-    routes = [RouteThompsonSampler(alpha=config.true_alpha) for route in config.routes]
+    routes = [
+        RouteThompsonSampler(
+            alpha=config.true_alpha, true_mean_tt=config.true_means_tt[idx]
+        )
+        for idx, _ in enumerate(config.routes)
+    ]
 
     for episode in range(1, config.n_episodes_thompson_sampling + 1):
         print(f"--- Episode {episode} ---")

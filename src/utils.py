@@ -1,7 +1,7 @@
 from config import config
 from scenario import Scenario
 from environment import Environment
-from data_science import plot_histogram_tt
+from data_science import plot_histogram_and_kde_tt
 from paths import REWARD_DISTRIBUTIONS_DIR
 
 
@@ -22,7 +22,7 @@ def approximate_reward_distributions(seeds):
             travel_times.append(agent_tt)
 
         # Plot histogram
-        plot_histogram_tt(travel_times, path=path)
+        plot_histogram_and_kde_tt(travel_times, path=path)
 
 
 def perform_simulation(seeds, episode, selected_route):
