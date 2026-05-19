@@ -22,4 +22,13 @@ def approximate_reward_distributions(seeds):
             travel_times.append(agent_tt)
 
         # Plot histogram
-        plot_histogram_tt(travel_times, 5, path=path)
+        plot_histogram_tt(travel_times, path=path)
+
+
+def perform_simulation(seeds, episode, selected_route):
+    scen = Scenario(config.network, seed=seeds[episode - 1], episode=episode)
+    env = Environment(scen)
+    env.agent_select_action(config.routes, selected_route=selected_route)
+    env.run_episode()
+    agent_tt = env.get_reward()
+    return agent_tt
