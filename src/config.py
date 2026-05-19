@@ -18,9 +18,9 @@ class Config:
         "/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st.net.xml"
     )
     duration: int = 1200
-    n_veh: int = 1
+    n_veh: int = 500
     routes: list[list[str]] = field(default_factory=list)
-    n_episodes: int = 100
+    n_episodes: int = 5
     seed: int = 42
 
     # Agent
