@@ -2,20 +2,32 @@
 Class that creates the routes, config file
 """
 
-from paths import SUMO_CONF, TRIPS_INFO, ROUTES, UNDESIRED_FILE
+from paths import (
+    SUMO_CONF,
+    TRIPS_INFO,
+    ROUTES,
+    UNDESIRED_FILE,
+    FREE_FLOW_TRAVEL_TIMES_LINKS,
+    FREE_FLOW_TRAVEL_TIMES_ROUTES,
+)
 import subprocess
 from config import config
 from lxml import etree
+import pandas as pd
 
 
 class Scenario:
-    def __init__(self, network, seed):
+    def __init__(self, network, seed, episode):
         self.network = network
         self.seed = seed
+        self.ff_tt_routes = []
 
         self.generate_bg_traffic(config.duration, config.n_veh, self.seed)
         self.insert_agent(config.departure_time)
         self.conf = self.generate_conf(self.network, ROUTES)
+        # Only for the first episode
+        if episode == 1:
+            self.generate_free_flow_tt_routes(config.routes)
 
     def generate_bg_traffic(self, duration, n_veh, seed):
         """
@@ -94,3 +106,41 @@ class Scenario:
             conf.write(f"\t</report>\n")
             conf.write("</configuration>\n")
         return SUMO_CONF
+
+    def generate_free_flow_tt_routes(self, routes):
+        self._generate_free_flow_tt_links()
+        ff_tt_links = pd.read_parquet(FREE_FLOW_TRAVEL_TIMES_LINKS)
+        ff_tt_routes = []
+        for i, route in enumerate(routes):
+            route_tt = 0
+            for edge in route:
+                ff_tt_edge_row = ff_tt_links[ff_tt_links["edge"] == edge]
+                ff_tt_edge = ff_tt_edge_row.iloc[0]["free_flow_travel_time"]
+                route_tt += ff_tt_edge
+            ff_tt_routes.append({"route_id": i, "free_flow_tt": route_tt})
+        df = pd.DataFrame(ff_tt_routes)
+        df.to_parquet(FREE_FLOW_TRAVEL_TIMES_ROUTES, engine="pyarrow", index=False)
+
+    def _generate_free_flow_tt_links(self):
+        """
+        Called once per program execution
+        """
+        data = []
+
+        tree = etree.parse(config.network)
+        edges = tree.xpath("//edge[not(@function='internal')]")
+        for edge in edges:
+            edge_id = edge.get("id")
+
+            lane = edge.find("lane")
+
+            free_flow_speed = float(lane.get("speed"))
+            length = float(lane.get("length"))
+
+            free_flow_travel_time = length / free_flow_speed
+            data.append(
+                {"edge": edge_id, "free_flow_travel_time": free_flow_travel_time}
+            )
+
+        df = pd.DataFrame(data)
+        df.to_parquet(FREE_FLOW_TRAVEL_TIMES_LINKS, engine="pyarrow", index=False)
