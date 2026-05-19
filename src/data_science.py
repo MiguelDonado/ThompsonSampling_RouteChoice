@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_histogram_tt(tt, bins):
+def plot_histogram_tt(tt, bins, path):
     mean = np.mean(tt)
     std = np.std(tt)
 
@@ -18,4 +18,5 @@ def plot_histogram_tt(tt, bins):
 
     plt.legend()
 
-    plt.show()
+    plt.savefig(path, dpi=300, bbox_inches="tight")
+    plt.close()

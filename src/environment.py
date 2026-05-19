@@ -13,11 +13,12 @@ class Environment:
     def __init__(self, scenario):
         self.scenario = scenario
 
-    def agent_select_action(self, routes):
-        action = self._select_action_using_strategy(routes)
+    def agent_select_action(self, routes, selected_route=None):
+        if selected_route:
+            action = routes[selected_route]
+        else:
+            action = self._select_action_using_strategy(routes)
         self._update_routes(action)
-
-        config.routes[0]
 
     def run_episode(self):
         cmd = ["sumo", self.scenario.conf]

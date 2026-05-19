@@ -6,6 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Folders
 SUMO_DIR = BASE_DIR / "sumo"
 DATA_DIR = BASE_DIR / "data"
+REWARD_DISTRIBUTIONS_DIR = BASE_DIR / "figures" / "reward_distributions"
 
 # Files
 SUMO_CONF = SUMO_DIR / "config" / "basic.cfg"
