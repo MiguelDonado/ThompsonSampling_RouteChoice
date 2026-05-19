@@ -1,0 +1,1 @@
+The background traffic should be different for each episode, otherwise travel times would be deterministic, and we do not want that. We want travel times to be realizations of a hidden distribution. We need uncertainty to learn

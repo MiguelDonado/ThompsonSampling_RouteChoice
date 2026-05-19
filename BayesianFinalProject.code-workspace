@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "terminal.integrated.cwd": "${workspaceFolder}/src",
+    "python.defaultInterpreterPath": "/home/miguel/.venvs/thesis_master/bin/python"
+  }
+}

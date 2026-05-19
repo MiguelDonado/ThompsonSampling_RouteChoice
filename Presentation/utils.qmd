@@ -1,0 +1,260 @@
+---
+title: "Bayesian. Final Project Presentation"
+author: "Miguel Angel Donado Fernandez"
+date: "17/may/2026"
+format:
+  html:
+    self-contained: true
+execute: 
+  warning: false
+  message: false
+editor_options: 
+  chunk_output_type: console
+---
+
+## Generic view of Multi-Armed Bandit problems and Thompson Sampling strategy
+Let's say Bayesian class follows a Normal Distribution N(7,1)
+Let's say Frequentist class follows a Normal Distribution N(6,1)
+```{r}
+library(tidyverse)
+```
+
+```{r}
+ggplot() +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = 7, sd = 1),
+    aes(color = "Bayesian")
+  ) +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = 6, sd = 1),
+    aes(color = "Frequentist")
+  ) +
+  scale_color_manual(
+    values = c(
+      "Bayesian" = "red",
+      "Frequentist" = "blue"
+    ),
+    name = "Distributions"
+  ) +
+  theme_classic() +
+  geom_vline(
+    xintercept = 7,
+    color = "red",
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    xintercept = 6,
+    color = "blue",
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(
+    breaks = c(0, 6, 7, 10),
+    limits = c(0,10)
+  )
+```
+
+```{r}
+ggplot() +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = 7, sd = 1),
+    color="red"
+  ) +
+  theme_minimal() +
+  geom_vline(
+    xintercept = 7,
+    color = "red",
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(
+    breaks = c(0, 7, 10),
+    limits = c(0,10),
+    name = "reward"
+  ) +
+  annotate(
+    "text",
+    x = 9,
+    y = 0.35,
+    label = "N(7,1)",
+    parse = TRUE,
+    color = "red",
+    size=18
+  ) + 
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.x = element_text(size = 40)
+  )
+```
+
+```{r}
+ggplot() +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = 6, sd = 1),
+    color="blue"
+  ) +
+  theme_minimal() +
+  geom_vline(
+    xintercept = 6,
+    color = "blue",
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(
+    breaks = c(0, 6, 10),
+    limits = c(0,10),
+    name = "reward"
+  ) +
+  annotate(
+    "text",
+    x = 9,
+    y = 0.35,
+    label = "N(6,1)",
+    parse = TRUE,
+    color = "blue",
+    size = 18
+  ) +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.x = element_text(size = 40)
+)
+```
+
+```{r}
+# Priors
+ggplot() +
+  stat_function(
+    fun = dnorm,
+    args = list(mean=0,sd=10)
+  ) +
+  scale_y_continuous(limits = c(0,0.1)) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(size = 30)
+  ) +
+  geom_vline(
+    xintercept = 0,
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(
+    breaks = c(0,10),
+    limits = c(-10,10)
+  ) +
+  annotate(
+    "text",
+    x = 7.5,
+    y = 0.09,
+    label = "N(0,100)",
+    parse = TRUE,
+    size = 16
+  ) 
+```
+
+```{r}
+# Priors
+library(ggplot2)
+
+ggplot() +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = 7, sd = 0.10),
+    aes(color = "bayesian"),
+    linewidth = 2
+  ) +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = 6, sd = 0.20),
+    aes(color = "frequentist"),
+    linewidth = 2
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(size = 30)
+  ) +
+  geom_vline(
+    xintercept = 7,
+    linetype = "dashed",
+    color = "red",
+    linewidth = 2
+  ) +
+  geom_vline(
+    xintercept = 6,
+    linetype = "dashed",
+    color = "blue"
+  ) +
+  scale_x_continuous(
+    breaks = c(0, 6, 10),
+    limits = c(-1, 10)
+  ) +
+  scale_color_manual(
+    values = c(
+      "bayesian" = "red",
+      "frequentist" = "blue"
+    ),
+    name = "Distributions"
+  ) + theme(legend.position = "none") +
+  scale_y_continuous(limits = c(0,5))
+```
+
+```{r}
+library(tidyverse)
+
+ggplot() +
+  stat_function(
+    fun = dbinom,
+    args = list(size = 1, prob = 0.8)
+  ) +
+  xlim(0,1)
+```
+
+```{r}
+library(tidyverse)
+
+p <- 0.7
+
+df <- tibble(
+  x = c(0, 1),
+  prob = c(1 - p, p)
+)
+
+p <- 0.7
+
+df <- tibble(
+  x = c(0, 1),
+  prob = c(1 - p, p)
+)
+
+ggplot(df, aes(x, prob)) +
+  geom_segment(aes(xend = x, y = 0, yend = prob),
+               linewidth = 1) +
+  geom_point(size = 3) +
+  scale_x_continuous(breaks = c(0, 1)) +
+  labs(x = "x", y = "P(X = x)") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(size = 30)
+  )
+```
+
+
+
+
+
+
+
+
