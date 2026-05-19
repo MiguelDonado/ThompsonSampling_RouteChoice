@@ -1,7 +1,7 @@
 from scenario import Scenario
 from environment import Environment
 from config import config
-from data_science import plot_histogram_tt
+from data_science import plot_histogram_tt, draw_distributions
 import numpy as np
 from utils import approximate_reward_distributions, perform_simulation
 from thompson_sampling import RouteThompsonSampler
@@ -22,11 +22,15 @@ def main():
 
     for episode in range(1, config.n_episodes_thompson_sampling + 1):
         print(f"--- Episode {episode} ---")
-        # sample expected travel time from each posterior
-        sampled_times = [r.sample_expected_travel_time() for r in routes]
 
-        # choose route with MINIMUM sampled avg travel time
-        chosen_idx = np.argmin(sampled_times)
+        draw_distributions(i=episode, R=routes, n_samples=1000)
+
+        # sample expected travel time from each posterior
+        sampled_times = [r.sample_expected_travel_time(n_samples=1) for r in routes]
+
+        # choose route with MINIMUM sampled avg travel time (max reward)
+        sampled_rewards = [-sample_time for sample_time in sampled_times]
+        chosen_idx = np.argmax(sampled_rewards)
 
         # observe actual travel time
         agent_tt = perform_simulation(seeds, episode, selected_route=chosen_idx)

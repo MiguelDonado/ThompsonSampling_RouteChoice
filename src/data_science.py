@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import skew
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def plot_histogram_tt(tt, path):
@@ -34,3 +36,17 @@ def plot_histogram_tt(tt, path):
 
     plt.savefig(path, dpi=300, bbox_inches="tight")
     plt.close()
+
+
+def draw_distributions(R, i, n_samples):
+    if i < 10 or (i < 100 and (i + 1) % 10 == 0) or ((i + 1) % 100 == 0):
+        for r in R:
+            samples = r.get_samples_post_avg_tt(n_samples)
+            sns.kdeplot(samples, fill=True)
+        plt.title(f"Iterarion {i}", fontsize=20)
+        plt.legend([f"route={idx}" for idx, _ in enumerate(R)], fontsize=16)
+        plt.xlim(50, 200)
+        plt.xlabel("Average Travel Time", fontsize=20)
+        plt.ylabel("Density", fontsize=20)
+        plt.show()
+        plt.close()
