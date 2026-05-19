@@ -17,6 +17,8 @@ from enum import Enum
         150
     Departure_time:
         360
+    True mean travel times (approximation 500 simulations):
+        [64.5, 72.5, 85]
 
 Sioux Falls:
     OD:
@@ -30,6 +32,8 @@ Sioux Falls:
         450
     Departure_time_
         360
+    True mean travel times (approximation 500 simulations):
+        [72.8, 74.9]
 
 """
 
@@ -68,8 +72,8 @@ class Config:
     n_episodes_thompson_sampling: int = 2000
     true_alpha: float = 1.5  # Parameter gamma distribution
     # Non-informative prior over beta parameter of Gamma
-    prior_a: float = 0.001
-    prior_b: float = 0.001
+    prior_a: float = 1
+    prior_b: float = 1
 
 
 config = Config(

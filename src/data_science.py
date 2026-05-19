@@ -7,7 +7,7 @@ from paths import POST_AVG_TT_DIR
 from config import config
 
 
-def plot_histogram_and_kde_tt(tt, path):
+def plot_histogram_and_kde_tt(tt, path, idx_route):
     mean = np.mean(tt)
     std = np.std(tt)
 
@@ -30,10 +30,12 @@ def plot_histogram_and_kde_tt(tt, path):
     plt.plot([], [], " ", label=f"Q90 = {q90:.2f}")
     plt.plot([], [], " ", label=f"Q95 = {q95:.2f}")
 
-    plt.xlabel("Agent travel time")
-    plt.ylabel("Frequency")
-    plt.title("Route travel time distribution")
-
+    plt.xlabel("Travel time")
+    plt.ylabel("Density")
+    plt.title(
+        f"Route {idx_route} travel time distribution\n"
+        f"(Monte Carlo approximation using {config.n_episodes} simulations"
+    )
     plt.legend()
 
     plt.savefig(path, dpi=300, bbox_inches="tight")
@@ -46,8 +48,8 @@ def draw_distributions(R, i, n_samples):
         for r in R:
             samples = r.get_samples_post_avg_tt(n_samples)
             sns.kdeplot(samples, fill=True)
-        plt.title(f"Iterarion {i}", fontsize=20)
-        plt.legend([f"true_avg={r.true_mean_tt}" for r in R], fontsize=16)
+        plt.title(f"Iterarion {i}\n" "Posteriors mean travel time", fontsize=20)
+        plt.legend([f"true_mean_tt={r.true_mean_tt}" for r in R], fontsize=16)
         plt.xlim(50, 200)
         plt.xlabel("Average Travel Time", fontsize=20)
         plt.ylabel("Density", fontsize=20)

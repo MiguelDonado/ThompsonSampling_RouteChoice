@@ -29,19 +29,22 @@ def main():
     ]
 
     for episode in range(1, config.n_episodes_thompson_sampling + 1):
-        print(f"--- Episode {episode} ---")
+        print(f"\n--- Episode {episode} ---")
 
         draw_distributions(i=episode, R=routes, n_samples=1000)
 
         # sample expected travel time from each posterior
         sampled_times = [r.sample_expected_travel_time(n_samples=1) for r in routes]
+        print(f"\t- Sampled mean travel times of routes: {sampled_times}")
 
         # choose route with MINIMUM sampled avg travel time (max reward)
         sampled_rewards = [-sample_time for sample_time in sampled_times]
         chosen_idx = np.argmax(sampled_rewards)
+        print(f"\t- Chosen route: {chosen_idx}")
 
         # observe actual travel time
         agent_tt = perform_simulation(seeds, episode, selected_route=chosen_idx)
+        print(f"\t- Observed travel time: {agent_tt}")
 
         # update posterior
         routes[chosen_idx].update_posterior(agent_tt)

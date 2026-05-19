@@ -6,3 +6,6 @@ For the correct empty network travel time I would consider the actual empty netw
   1. Means relatively close
   2. Distributions overlap
   3. Uncertainty matters
+   
+
+For Thompson Sampling, Im interested in Posterior distribution of expected travel time because the action-selection rule is based on samples from this posterior, not in the posterior distribution of travel times.
