@@ -6,10 +6,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Folders
 SUMO_DIR = BASE_DIR / "sumo"
 DATA_DIR = BASE_DIR / "data"
-REWARD_DISTRIBUTIONS_DIR = BASE_DIR / "figures" / "reward_distributions"
-POST_AVG_TT_DIR = BASE_DIR / "figures" / "posterior_avg_tt"
+THOMPSON_SAMPLING_DIR = BASE_DIR / "figures" / "ThompsonSampling"
+MONTECARLO_DIR = BASE_DIR / "figures" / "MonteCarlo"
+REWARD_DISTRIBUTIONS_DIR = MONTECARLO_DIR / "approx_reward_dist"
+POST_AVG_TT_DIR = THOMPSON_SAMPLING_DIR / "post_avg_tt"
 CONVERGENCE_POST_MEANS = (
-    BASE_DIR / "figures" / "convergence_post_mean" / "convergence_post_mean.png"
+    THOMPSON_SAMPLING_DIR / "convergence_post_mean" / "convergence_post_mean.png"
 )
 TRAVEL_TIMES_MONTECARLO = DATA_DIR / "processed"
 

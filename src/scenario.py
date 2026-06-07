@@ -1,19 +1,24 @@
 """
-Class that creates the routes, config file
+Class that performs the next steps:
+    1. Creates the bg traffic, inserts the agent (ROUTES FILE)
+    2. Creates the config file
+    3. Computes the free flow travel time of routes
 """
 
+import subprocess
+
+import pandas as pd
+from lxml import etree
+
+from config import config
 from paths import (
-    SUMO_CONF,
-    TRIPS_INFO,
-    ROUTES,
-    UNDESIRED_FILE,
     FREE_FLOW_TRAVEL_TIMES_LINKS,
     FREE_FLOW_TRAVEL_TIMES_ROUTES,
+    ROUTES,
+    SUMO_CONF,
+    TRIPS_INFO,
+    UNDESIRED_FILE,
 )
-import subprocess
-from config import config
-from lxml import etree
-import pandas as pd
 
 
 class Scenario:
@@ -25,6 +30,7 @@ class Scenario:
         self.generate_bg_traffic(config.duration, config.n_veh, self.seed)
         self.insert_agent(config.departure_time)
         self.conf = self.generate_conf(self.network, ROUTES)
+
         # Only for the first episode
         if episode == 1:
             self.generate_free_flow_tt_routes(config.routes)
@@ -62,6 +68,9 @@ class Scenario:
         UNDESIRED_FILE.unlink()
 
     def insert_agent(self, agent_departure_time):
+        """
+        Insert agent element in routes XML file
+        """
         tree = etree.parse(ROUTES)
         root = tree.getroot()
 
@@ -108,6 +117,10 @@ class Scenario:
         return SUMO_CONF
 
     def generate_free_flow_tt_routes(self, routes):
+        """
+        Creates a parquet file with columns:
+        route_id | free_flow_tt
+        """
         self._generate_free_flow_tt_links()
         ff_tt_links = pd.read_parquet(FREE_FLOW_TRAVEL_TIMES_LINKS)
         ff_tt_routes = []
@@ -124,6 +137,9 @@ class Scenario:
     def _generate_free_flow_tt_links(self):
         """
         Called once per program execution
+        Creates a parquet file with columns:
+
+        edge | free_flow_travel_time
         """
         data = []
 

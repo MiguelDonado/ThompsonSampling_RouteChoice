@@ -2,11 +2,12 @@
 Class responsible for running the simulation
 """
 
+import subprocess
+
+from lxml import etree
+
 from config import config
 from paths import ROUTES, TRIPS_INFO
-
-import subprocess
-from lxml import etree
 
 
 class Environment:
@@ -14,6 +15,9 @@ class Environment:
         self.scenario = scenario
 
     def agent_select_action(self, routes, selected_route):
+        """
+        Update agent route in the routes file with the selected route by the agent
+        """
         action = routes[selected_route]
         # Update route file with the selected route
         self._update_routes(action)
@@ -23,6 +27,9 @@ class Environment:
         subprocess.run(cmd)
 
     def get_reward(self):
+        """
+        Returns float with the agent travel time
+        """
         tree = etree.parse(TRIPS_INFO)
         root = tree.getroot()
         agent_tt = float(root.xpath("//tripinfo[@id='agent']/@duration")[0])

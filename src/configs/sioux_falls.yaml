@@ -1,0 +1,15 @@
+name_network: "sioux_falls"
+network: "/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/sioux_falls.net.xml"
+
+duration: 540 # 9 min
+n_veh: 467
+departure_time: 360 # 6 min
+
+# OD: 1-20
+routes:
+  - ["E1_3_SB","E3_12_SB","E12_13_SB","E13_24_EB","E21_24_EB","E20_21_EB"]
+  - ["E1_2_EB","E2_6_SB","E6_8_SB","E8_16_SB","E16_17_SB","E17_19_SB","E19_20_SB"]
+
+true_means_tt: 
+  - 72.8
+  - 74.9

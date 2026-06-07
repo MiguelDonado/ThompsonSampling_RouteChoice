@@ -1,0 +1,16 @@
+name_network: "1st_koh"
+network: "/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st_koh.net.xml"
+duration: 540 # 9 min
+n_veh: 156
+departure_time: 360 # 6 min
+
+# OD: 1-8
+routes:
+  - ["E1_2_EB","E2_6_NB","E6_7_NEB","E7_8_NEB"]
+  - ["E1_2_EB","E2_3_EB","E3_4_EB","E4_7_NWB","E7_8_NEB"]
+  - ["E1_2_EB","E2_3_EB","E3_6_NWB","E6_7_NEB","E7_8_NEB"]
+
+true_means_tt:
+  - 64.5
+  - 72.5
+  - 85

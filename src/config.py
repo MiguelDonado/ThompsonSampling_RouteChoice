@@ -3,43 +3,25 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
-"""
-1st network:
-    OD: 
-        1-7
-    Routes:
-        ["E1_2_EB","E2_6_NB","E6_7_NEB","E7_8_NEB"],
-        ["E1_2_EB","E2_3_EB","E3_4_EB","E4_7_NWB","E7_8_NEB"],
-        ["E1_2_EB","E2_3_EB","E3_6_NWB","E6_7_NEB","E7_8_NEB"]
-    Duration: 
-        520
-    N_veh: 
-        150
-    Departure_time:
-        360
-    True mean travel times (approximation 500 simulations):
-        [64.5, 72.5, 85]
+import yaml
 
-Sioux Falls:
-    OD:
-        1-20
-    Routes:
-        ["E1_3_SB","E3_12_SB","E12_13_SB","E13_24_EB","E21_24_EB","E20_21_EB"],
-        ["E1_2_EB","E2_6_SB","E6_8_SB","E8_16_SB","E16_17_SB","E17_19_SB","E19_20_SB"],
-    Duration: 
-        520
-    N_veh:
-        450
-    Departure_time_
-        360
-    True mean travel times (approximation 500 simulations):
-        [72.8, 74.9]
+CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/first_koh.yaml"
 
-"""
+
+class Mode(Enum):
+    MONTE_CARLO = "montecarlo"
+    THOMPSON = "thompson"
 
 
 @dataclass
 class Config:
+    network: str
+    duration: int
+    n_veh: int
+    name_network: str
+    routes: list[list[str]]
+    true_means_tt: list[float]
+
     ##############
     ### Randomness rng object
     ##############
@@ -48,39 +30,30 @@ class Config:
     ##############
     ### Simulation
     ##############
-    network: str = (
-        "/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st_koh.net.xml"
-    )
-    duration: int = 520
-    n_veh: int = 150
+    mode: Mode = Mode.THOMPSON
 
     ##############
     ### Agent
     ##############
     departure_time: int = 360
-    routes: list[list[str]] = field(default_factory=list)
 
     ##############
     ### MonteCarlo approximation true reward distributions
     ##############
-    n_episodes: int = 10
-    true_means_tt: list[list[float]] = field(default_factory=list)
+    n_episodes_MC: int = 10
 
     ##############
     ### Thompson-sampling
     ##############
-    n_episodes_thompson_sampling: int = 20
+    n_episodes_TS: int = 50
     true_alpha: float = 1.5  # Parameter gamma distribution
-    # Non-informative prior over beta parameter of Gamma
+    # Hyperparameters of non-informative prior of beta parameter of Gamma
     prior_a: float = 1
     prior_b: float = 1
 
 
-config = Config(
-    routes=[
-        ["E1_2_EB", "E2_6_NB", "E6_7_NEB", "E7_8_NEB"],
-        ["E1_2_EB", "E2_3_EB", "E3_4_EB", "E4_7_NWB", "E7_8_NEB"],
-        ["E1_2_EB", "E2_3_EB", "E3_6_NWB", "E6_7_NEB", "E7_8_NEB"],
-    ],
-    true_means_tt=[64.5, 72.5, 85],
-)
+# Initialize config
+with open(CONFIG, "r") as f:
+    data = yaml.safe_load(f)
+
+config = Config(**data)
