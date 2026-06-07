@@ -20,8 +20,8 @@ SUMO_CONF = SUMO_DIR / "config" / "basic.cfg"
 TRIPS_INFO = DATA_DIR / "raw" / "trips_info.xml"
 ROUTES = SUMO_DIR / "routes" / "routes.rou.xml"
 UNDESIRED_FILE = BASE_DIR / "routes.rou.xml"
-FREE_FLOW_TRAVEL_TIMES_LINKS = DATA_DIR / "processed" / "free_flow_tt_links.parquet"
-FREE_FLOW_TRAVEL_TIMES_ROUTES = DATA_DIR / "processed" / "free_flow_tt_routes.parquet"
+METRICS_LINKS = DATA_DIR / "processed" / "metrics_links.parquet"
+METRICS_ROUTES = DATA_DIR / "processed" / "metrics_routes.parquet"
 
 # ============================================================
 # MLFlow database

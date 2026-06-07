@@ -6,7 +6,12 @@ from tempfile import NamedTemporaryFile
 import mlflow
 
 from config import config
-from paths import ARTIFACTS_STORAGE, BACKEND_DB, REWARD_DISTRIBUTIONS_DIR
+from paths import (
+    ARTIFACTS_STORAGE,
+    BACKEND_DB,
+    REWARD_DISTRIBUTIONS_DIR,
+    THOMPSON_SAMPLING_DIR,
+)
 
 
 def set_up_mlflow():
@@ -61,9 +66,9 @@ def extract_mlflow_hyperparams(config):
         "alpha": config.true_alpha,
     }
 
-    if config.mode == "montecarlo":
+    if config.mode.value == "montecarlo":
         my_dict["n_episodes_MC"] = config.n_episodes_MC
-    elif config.mode == "thompson":
+    elif config.mode.value == "thompson":
         my_dict["n_episodes_TS"] = config.n_episodes_TS
 
     return my_dict
@@ -85,3 +90,5 @@ def log_config_artifact():
 def log_mlflow_artifacts():
     if config.mode.value == "montecarlo":
         mlflow.log_artifact(REWARD_DISTRIBUTIONS_DIR)
+    elif config.mode.value == "thompson":
+        mlflow.log_artifact(THOMPSON_SAMPLING_DIR)

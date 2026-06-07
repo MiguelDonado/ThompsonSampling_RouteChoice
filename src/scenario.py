@@ -12,8 +12,8 @@ from lxml import etree
 
 from config import config
 from paths import (
-    FREE_FLOW_TRAVEL_TIMES_LINKS,
-    FREE_FLOW_TRAVEL_TIMES_ROUTES,
+    METRICS_LINKS,
+    METRICS_ROUTES,
     ROUTES,
     SUMO_CONF,
     TRIPS_INFO,
@@ -33,7 +33,7 @@ class Scenario:
 
         # Only for the first episode
         if episode == 1:
-            self.generate_free_flow_tt_routes(config.routes)
+            self.compute_metrics_routes(config.routes)
 
     def generate_bg_traffic(self, duration, n_veh, seed):
         """
@@ -116,30 +116,38 @@ class Scenario:
             conf.write("</configuration>\n")
         return SUMO_CONF
 
-    def generate_free_flow_tt_routes(self, routes):
+    def compute_metrics_routes(self, routes):
         """
         Creates a parquet file with columns:
-        route_id | free_flow_tt
+        route_id | free_flow_tt | length
         """
-        self._generate_free_flow_tt_links()
-        ff_tt_links = pd.read_parquet(FREE_FLOW_TRAVEL_TIMES_LINKS)
-        ff_tt_routes = []
+        self.compute_metrics_links()
+        metrics_links = pd.read_parquet(METRICS_LINKS)
+        metrics_routes = []
         for i, route in enumerate(routes):
             route_tt = 0
+            route_length = 0
             for edge in route:
-                ff_tt_edge_row = ff_tt_links[ff_tt_links["edge"] == edge]
-                ff_tt_edge = ff_tt_edge_row.iloc[0]["free_flow_travel_time"]
+                metrics_edge_row = metrics_links[metrics_links["edge"] == edge]
+                # Free-flow travel time
+                ff_tt_edge = metrics_edge_row.iloc[0]["free_flow_travel_time"]
                 route_tt += ff_tt_edge
-            ff_tt_routes.append({"route_id": i, "free_flow_tt": route_tt})
-        df = pd.DataFrame(ff_tt_routes)
-        df.to_parquet(FREE_FLOW_TRAVEL_TIMES_ROUTES, engine="pyarrow", index=False)
+                # Length
+                length_edge = metrics_edge_row.iloc[0]["length"]
+                route_length += length_edge
 
-    def _generate_free_flow_tt_links(self):
+            metrics_routes.append(
+                {"route_id": i, "free_flow_tt": route_tt, "length": route_length}
+            )
+        df = pd.DataFrame(metrics_routes)
+        df.to_parquet(METRICS_ROUTES, engine="pyarrow", index=False)
+
+    def compute_metrics_links(self):
         """
         Called once per program execution
         Creates a parquet file with columns:
 
-        edge | free_flow_travel_time
+        edge | free_flow_travel_time | length
         """
         data = []
 
@@ -155,8 +163,12 @@ class Scenario:
 
             free_flow_travel_time = length / free_flow_speed
             data.append(
-                {"edge": edge_id, "free_flow_travel_time": free_flow_travel_time}
+                {
+                    "edge": edge_id,
+                    "free_flow_travel_time": free_flow_travel_time,
+                    "length": length,
+                }
             )
 
         df = pd.DataFrame(data)
-        df.to_parquet(FREE_FLOW_TRAVEL_TIMES_LINKS, engine="pyarrow", index=False)
+        df.to_parquet(METRICS_LINKS, engine="pyarrow", index=False)
