@@ -22,3 +22,9 @@ ROUTES = SUMO_DIR / "routes" / "routes.rou.xml"
 UNDESIRED_FILE = BASE_DIR / "routes.rou.xml"
 FREE_FLOW_TRAVEL_TIMES_LINKS = DATA_DIR / "processed" / "free_flow_tt_links.parquet"
 FREE_FLOW_TRAVEL_TIMES_ROUTES = DATA_DIR / "processed" / "free_flow_tt_routes.parquet"
+
+# ============================================================
+# MLFlow database
+# ============================================================
+BACKEND_DB = BASE_DIR / "mlflow_db" / "mlflow.db"
+ARTIFACTS_STORAGE = BASE_DIR / "mlruns" / "mlruns"

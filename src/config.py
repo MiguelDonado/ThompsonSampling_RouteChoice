@@ -30,7 +30,7 @@ class Config:
     ##############
     ### Simulation
     ##############
-    mode: Mode = Mode.THOMPSON
+    mode: Mode = Mode.MONTE_CARLO
 
     ##############
     ### Agent
