@@ -3,7 +3,9 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
+import numpy as np
 import yaml
+from lxml import etree
 
 CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/first_koh.yaml"
 
@@ -30,7 +32,7 @@ class Config:
     ##############
     ### Simulation
     ##############
-    mode: Mode = Mode.THOMPSON
+    mode: Mode = Mode.MONTE_CARLO
 
     ##############
     ### Agent
@@ -40,7 +42,7 @@ class Config:
     ##############
     ### MonteCarlo approximation true reward distributions
     ##############
-    n_episodes_MC: int = 10
+    n_episodes_MC: int = 50
 
     ##############
     ### Thompson-sampling
