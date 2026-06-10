@@ -63,7 +63,6 @@ def extract_mlflow_hyperparams(config):
         "network": config.network,
         "duration": config.duration,
         "n_veh": config.n_veh,
-        "alpha": config.true_alpha,
     }
 
     if config.mode.value == "montecarlo":

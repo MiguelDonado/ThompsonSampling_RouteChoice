@@ -4,7 +4,7 @@ import yaml
 from lxml import etree
 
 # Set config file
-CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/first_koh.yaml"
+CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/sioux_falls.yaml"
 
 # Load data config
 with open(CONFIG, "r") as f:

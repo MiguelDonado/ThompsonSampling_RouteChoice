@@ -1,0 +1,6 @@
+# MLflow artifacts
+mlruns/
+mlflow_db/
+
+# R environment/package folder
+R/

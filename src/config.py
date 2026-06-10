@@ -23,6 +23,9 @@ class Config:
     name_network: str
     routes: list[list[str]]
     true_means_tt: list[float]
+    true_std_tt: list[float]
+    MoM_alpha: list[float]
+    departure_time: int
 
     ##############
     ### Randomness rng object
@@ -32,12 +35,7 @@ class Config:
     ##############
     ### Simulation
     ##############
-    mode: Mode = Mode.MONTE_CARLO
-
-    ##############
-    ### Agent
-    ##############
-    departure_time: int = 360
+    mode: Mode = Mode.THOMPSON
 
     ##############
     ### MonteCarlo approximation true reward distributions
@@ -48,7 +46,6 @@ class Config:
     ### Thompson-sampling
     ##############
     n_episodes_TS: int = 50
-    true_alpha: float = 1.5  # Parameter gamma distribution
     # Hyperparameters of non-informative prior of beta parameter of Gamma
     prior_a: float = 1
     prior_b: float = 1

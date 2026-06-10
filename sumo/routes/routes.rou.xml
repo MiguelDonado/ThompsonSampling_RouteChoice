@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- generated on 2026-06-07 21:24:10.406557 by Eclipse SUMO randomTrips.py v1_26_0+0000-fa7df22d7f1
+<!-- generated on 2026-06-10 19:25:52.164793 by Eclipse SUMO randomTrips.py v1_26_0+0000-fa7df22d7f1
 <configuration>
     <net-file value="/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st_koh.net.xml"/>
     <output-trip-file value="/home/miguel/6.Projects/BayesianFinalProject/sumo/routes/routes.rou.xml"/>
@@ -115,7 +115,7 @@
     <trip id="103" depart="356.54" from="E3_6_SEB" to="E2_3_EB"/>
     <trip id="104" depart="360.00" from="E3_6_NWB" to="E4_5_EB"/>
     <vehicle id="agent" depart="360">
-        <route edges="E1_2_EB E2_6_NB E6_7_NEB E7_8_NEB"/>
+        <route edges="E1_2_EB E2_3_EB E3_4_EB E4_7_NWB E7_8_NEB"/>
     </vehicle>
     <trip id="105" depart="363.46" from="E1_2_EB" to="E3_4_EB"/>
     <trip id="106" depart="366.92" from="E4_5_WB" to="E4_7_NWB"/>

@@ -17,3 +17,7 @@ true_means_tt:
 true_std_tt:
   - 11.43
   - 11.81
+
+MoM_alpha:
+  - 47.15
+  - 46.05 

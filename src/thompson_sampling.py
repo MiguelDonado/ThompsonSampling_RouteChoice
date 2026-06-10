@@ -28,6 +28,10 @@ class RouteThompsonSampler:
 
         6. Compute posterior mean expected travel time
 
+        Mathematical mode: shape-rate Gamma
+        NumPy implementation: shape-scale Gamma
+
+        Thats why I then transformed scale = 1 / beta
         """
 
         self.alpha = alpha
@@ -83,7 +87,7 @@ def run_thompson_sampling(seeds):
     # 0. Initialize for each route a Thompson Sampler
     routes = [
         RouteThompsonSampler(
-            alpha=config.true_alpha, true_mean_tt=config.true_means_tt[idx]
+            alpha=config.MoM_alpha[idx], true_mean_tt=config.true_means_tt[idx]
         )
         for idx, _ in enumerate(config.routes)
     ]
