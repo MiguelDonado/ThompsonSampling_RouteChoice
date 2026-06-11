@@ -92,6 +92,9 @@ def run_thompson_sampling(seeds):
     # Number of samples used to approximate the posterior of expected travel time
     n_samples_posterior = 1000
 
+    # 0. Make sure folder where plots will be saved is empty
+    rm_files_dir(POST_AVG_TT_DIR)
+
     # 0. Initialize for each route a Thompson Sampler
     routes = [
         RouteThompsonSampler(
@@ -164,9 +167,6 @@ def plot_posterior_distributions_avg_tt(i, routes, n_samples):
 
         # 2. Path of the plot
         path = POST_AVG_TT_DIR / f"{config.name_network}_post_avg_tt_{i}.png"
-
-        # 3. Make sure folder where plots will be saved is empty
-        rm_files_dir(POST_AVG_TT_DIR)
 
         # 3. Plot posterior distribution for each route
         for route in routes:

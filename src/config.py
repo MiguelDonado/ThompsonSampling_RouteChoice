@@ -7,7 +7,7 @@ import numpy as np
 import yaml
 from lxml import etree
 
-CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/toy_network.yaml"
+CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/sioux_falls.yaml"
 
 
 class Mode(Enum):
@@ -45,7 +45,7 @@ class Config:
     ##############
     ### Thompson-sampling
     ##############
-    n_episodes_TS: int = 10
+    n_episodes_TS: int = 1000
     # Hyperparameters of non-informative prior of beta parameter of Gamma
     prior_a: float = 0.1
     prior_b: float = 0.1
