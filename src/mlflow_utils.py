@@ -10,6 +10,8 @@ from paths import (
     ARTIFACTS_STORAGE,
     BACKEND_DB,
     MONTECARLO_DIR,
+    POSTERIOR_STATE_PARQUET,
+    SAMPLED_MEAN_TT_PARQUET,
     THOMPSON_SAMPLING_DIR,
     TRAVEL_TIMES_MONTECARLO,
 )
@@ -95,3 +97,5 @@ def log_mlflow_artifacts():
         mlflow.log_artifact(TRAVEL_TIMES_MONTECARLO)
     elif config.mode.value == "thompson":
         mlflow.log_artifact(THOMPSON_SAMPLING_DIR)
+        mlflow.log_artifact(SAMPLED_MEAN_TT_PARQUET)
+        mlflow.log_artifact(POSTERIOR_STATE_PARQUET)

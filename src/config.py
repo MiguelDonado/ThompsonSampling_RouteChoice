@@ -35,7 +35,7 @@ class Config:
     ##############
     ### Simulation
     ##############
-    mode: Mode = Mode.MONTE_CARLO
+    mode: Mode = Mode.THOMPSON
 
     ##############
     ### MonteCarlo approximation true reward distributions
@@ -45,7 +45,7 @@ class Config:
     ##############
     ### Thompson-sampling
     ##############
-    n_episodes_TS: int = 2000
+    n_episodes_TS: int = 10
     # Hyperparameters of non-informative prior of beta parameter of Gamma
     prior_a: float = 0.1
     prior_b: float = 0.1

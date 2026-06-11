@@ -9,14 +9,15 @@ DATA_DIR = BASE_DIR / "data"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
 THOMPSON_SAMPLING_DIR = BASE_DIR / "figures" / "ThompsonSampling"
 MONTECARLO_DIR = BASE_DIR / "figures" / "MonteCarlo"
-POST_AVG_TT_DIR = THOMPSON_SAMPLING_DIR / "post_avg_tt"
+POST_AVG_TT_DIR = THOMPSON_SAMPLING_DIR / "posterior_avg_tt"
 CONVERGENCE_POST_MEANS = (
     THOMPSON_SAMPLING_DIR / "convergence_post_mean" / "convergence_post_mean.png"
 )
 TRAVEL_TIMES_MONTECARLO = PROCESSED_DATA_DIR / "MonteCarlo"
 
 # Output files Thompson
-SAMPLED_TT_PARQUET = PROCESSED_DATA_DIR
+SAMPLED_MEAN_TT_PARQUET = PROCESSED_DATA_DIR / "sampled_mean_tt.parquet"
+POSTERIOR_STATE_PARQUET = PROCESSED_DATA_DIR / "posterior_state.parquet"
 
 # Files
 SUMO_CONF = SUMO_DIR / "config" / "basic.cfg"

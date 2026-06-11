@@ -5,8 +5,12 @@ import seaborn as sns
 
 from config import config
 from environment import Environment
-
-# from experiment import accumulate_results, prepare_data, save_processed_data
+from experiment import (
+    accumulate_results,
+    prepare_data,
+    rm_files_dir,
+    save_processed_data,
+)
 from paths import CONVERGENCE_POST_MEANS, POST_AVG_TT_DIR
 from scenario import Scenario
 
@@ -97,7 +101,7 @@ def run_thompson_sampling(seeds):
     ]
 
     # Data structure to store data
-    results = {"sampled_tt": []}
+    results = {"sampled_tt": [], "posterior_state": []}
 
     for episode in range(1, config.n_episodes_TS + 1):
         print(f"\n--- Episode {episode} ---")
@@ -108,15 +112,17 @@ def run_thompson_sampling(seeds):
         )
 
         # 2. Sample from each posterior
-        sampled_times = [r.sample_expected_travel_time(n_samples=1) for r in routes]
-        result = prepare_data(sampled_tt_routes=sampled_times)
-        accumulate_results(results, result)
-        print(f"\t- Sampled mean travel times of routes: {sampled_times}")
+        sampled_mean_times = [
+            r.sample_expected_travel_time(n_samples=1) for r in routes
+        ]
+        print(f"\t- Sampled mean travel times of routes: {sampled_mean_times}")
 
         # 3. Choose route that maximizes reward
         # Reward = -Travel time
-        sampled_rewards = [-sample_time for sample_time in sampled_times]
-        chosen_idx = np.argmax(sampled_rewards)
+        sampled_mean_rewards = [
+            -sample_mean_time for sample_mean_time in sampled_mean_times
+        ]
+        chosen_idx = np.argmax(sampled_mean_rewards)
         print(f"\t- Chosen route: {chosen_idx}")
 
         # 4. Observe actual travel time
@@ -125,6 +131,14 @@ def run_thompson_sampling(seeds):
 
         # 5. Update posterior (only of chosen route)
         routes[chosen_idx].update_posterior(agent_tt)
+
+        ##########
+        # 6. Prepare generated data
+        ##########
+        result = prepare_data(
+            episode=episode, sampled_mean_tt_routes=sampled_mean_times, routes=routes
+        )
+        accumulate_results(results, result)
 
     # 6. Generate plot comparing post mean obtained after convergence with the true means
     plot_convergence_post_mean_meantt(R=routes)
@@ -145,7 +159,10 @@ def plot_posterior_distributions_avg_tt(i, routes, n_samples):
     if i < 10 or (i < 100 and (i + 1) % 10 == 0) or ((i + 1) % 100 == 0):
 
         # 2. Path of the plot
-        path = POST_AVG_TT_DIR / config.name_network / f"post_avg_tt_{i}.png"
+        path = POST_AVG_TT_DIR / f"{config.name_network}_post_avg_tt_{i}.png"
+
+        # 3. Make sure folder where plots will be saved is empty
+        rm_files_dir(POST_AVG_TT_DIR)
 
         # 3. Plot posterior distribution for each route
         for route in routes:
@@ -157,7 +174,8 @@ def plot_posterior_distributions_avg_tt(i, routes, n_samples):
 
         # 5. Title
         plt.title(
-            f"Iterarion {i}\n" "Posterior distributions of mean travel time",
+            f"{config.name_network}\n"
+            f"Posterior distributions of mean travel time (Episode {i})",
             fontsize=20,
         )
 
