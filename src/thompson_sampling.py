@@ -101,7 +101,7 @@ def run_thompson_sampling(seeds):
     ]
 
     # Data structure to store data
-    results = {"sampled_tt": [], "posterior_state": []}
+    results = {"sampled_tt": [], "posterior_state": [], "regret": []}
 
     for episode in range(1, config.n_episodes_TS + 1):
         print(f"\n--- Episode {episode} ---")
@@ -136,7 +136,11 @@ def run_thompson_sampling(seeds):
         # 6. Prepare generated data
         ##########
         result = prepare_data(
-            episode=episode, sampled_mean_tt_routes=sampled_mean_times, routes=routes
+            episode=episode,
+            sampled_mean_tt_routes=sampled_mean_times,
+            routes=routes,
+            chosen_route=chosen_idx,
+            travel_time=agent_tt,
         )
         accumulate_results(results, result)
 

@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 from config import config
-from paths import POSTERIOR_STATE_PARQUET, SAMPLED_MEAN_TT_PARQUET
+from paths import POSTERIOR_STATE_PARQUET, REGRET_PARQUET, SAMPLED_MEAN_TT_PARQUET
 
 
 def rm_files_dir(dir):
@@ -12,14 +12,17 @@ def rm_files_dir(dir):
             file.unlink()
 
 
-def prepare_data(episode, sampled_mean_tt_routes, routes):
+def prepare_data(episode, sampled_mean_tt_routes, routes, chosen_route, travel_time):
     sampled_mean_tt_result = prepare_sampled_mean_tt_routes(
         episode, sampled_mean_tt_routes
     )
     posterior_state_result = prepare_posterior_state(episode, routes)
+    regret_result = prepare_regret(episode, chosen_route, travel_time)
+
     return {
         "sampled_tt_result": sampled_mean_tt_result,
         "posterior_state_result": posterior_state_result,
+        "regret_result": regret_result,
     }
 
 
@@ -27,6 +30,7 @@ def accumulate_results(results, result):
     mapping = {
         "sampled_tt": ("sampled_tt_result", "extend"),
         "posterior_state": ("posterior_state_result", "extend"),
+        "regret": ("regret_result", "extend"),
     }
 
     """
@@ -53,10 +57,15 @@ def save_processed_data(results):
     mapping = {
         "sampled_tt": SAMPLED_MEAN_TT_PARQUET,
         "posterior_state": POSTERIOR_STATE_PARQUET,
+        "regret": REGRET_PARQUET,
     }
 
     for key, path in mapping.items():
         df = pd.DataFrame(results[key])
+
+        if key == "regret":
+            df["cumulative_regret"] = df["instant_regret"].cumsum()
+
         df.to_parquet(path, engine="pyarrow")
 
 
@@ -87,4 +96,20 @@ def prepare_posterior_state(episode, routes):
                 "post_mean_tt": post_mean_tt,
             }
         )
+    return rows
+
+
+def prepare_regret(episode, chosen_route, travel_time):
+    rows = []
+    chosen_route_tt = config.true_means_tt[chosen_route]
+    optimal_tt = min(config.true_means_tt)
+    instant_regret = chosen_route_tt - optimal_tt
+    rows.append(
+        {
+            "episode": episode,
+            "chosen_route": chosen_route,
+            "travel_time": travel_time,
+            "instant_regret": instant_regret,
+        }
+    )
     return rows

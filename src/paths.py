@@ -18,6 +18,7 @@ TRAVEL_TIMES_MONTECARLO = PROCESSED_DATA_DIR / "MonteCarlo"
 # Output files Thompson
 SAMPLED_MEAN_TT_PARQUET = PROCESSED_DATA_DIR / "sampled_mean_tt.parquet"
 POSTERIOR_STATE_PARQUET = PROCESSED_DATA_DIR / "posterior_state.parquet"
+REGRET_PARQUET = PROCESSED_DATA_DIR / "regret.parquet"
 
 # Files
 SUMO_CONF = SUMO_DIR / "config" / "basic.cfg"
