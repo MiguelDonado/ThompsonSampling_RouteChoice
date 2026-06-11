@@ -7,7 +7,7 @@ import numpy as np
 import yaml
 from lxml import etree
 
-CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/first_koh.yaml"
+CONFIG = "/home/miguel/6.Projects/BayesianFinalProject/src/configs/toy_network.yaml"
 
 
 class Mode(Enum):
@@ -35,20 +35,20 @@ class Config:
     ##############
     ### Simulation
     ##############
-    mode: Mode = Mode.THOMPSON
+    mode: Mode = Mode.MONTE_CARLO
 
     ##############
     ### MonteCarlo approximation true reward distributions
     ##############
-    n_episodes_MC: int = 50
+    n_episodes_MC: int = 10
 
     ##############
     ### Thompson-sampling
     ##############
-    n_episodes_TS: int = 50
+    n_episodes_TS: int = 2000
     # Hyperparameters of non-informative prior of beta parameter of Gamma
-    prior_a: float = 1
-    prior_b: float = 1
+    prior_a: float = 0.1
+    prior_b: float = 0.1
 
 
 # Initialize config

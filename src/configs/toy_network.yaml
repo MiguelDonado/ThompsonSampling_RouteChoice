@@ -1,5 +1,5 @@
-name_network: "1st_koh"
-network: "/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/1st_koh.net.xml"
+name_network: "toy"
+network: "/home/miguel/6.Projects/BayesianFinalProject/sumo/networks/toy.net.xml"
 duration: 540 # 9 min
 n_veh: 156
 departure_time: 360 # 6 min

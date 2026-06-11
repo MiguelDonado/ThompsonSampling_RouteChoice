@@ -9,8 +9,9 @@ from config import config
 from paths import (
     ARTIFACTS_STORAGE,
     BACKEND_DB,
-    REWARD_DISTRIBUTIONS_DIR,
+    MONTECARLO_DIR,
     THOMPSON_SAMPLING_DIR,
+    TRAVEL_TIMES_MONTECARLO,
 )
 
 
@@ -88,6 +89,9 @@ def log_config_artifact():
 
 def log_mlflow_artifacts():
     if config.mode.value == "montecarlo":
-        mlflow.log_artifact(REWARD_DISTRIBUTIONS_DIR)
+        # Plots
+        mlflow.log_artifact(MONTECARLO_DIR)
+        # Parquet files
+        mlflow.log_artifact(TRAVEL_TIMES_MONTECARLO)
     elif config.mode.value == "thompson":
         mlflow.log_artifact(THOMPSON_SAMPLING_DIR)

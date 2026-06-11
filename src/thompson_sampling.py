@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 
 from config import config
 from environment import Environment
+
+# from experiment import accumulate_results, prepare_data, save_processed_data
 from paths import CONVERGENCE_POST_MEANS, POST_AVG_TT_DIR
 from scenario import Scenario
 
@@ -82,6 +85,7 @@ class RouteThompsonSampler:
 
 
 def run_thompson_sampling(seeds):
+    # Number of samples used to approximate the posterior of expected travel time
     n_samples_posterior = 1000
 
     # 0. Initialize for each route a Thompson Sampler
@@ -91,6 +95,9 @@ def run_thompson_sampling(seeds):
         )
         for idx, _ in enumerate(config.routes)
     ]
+
+    # Data structure to store data
+    results = {"sampled_tt": []}
 
     for episode in range(1, config.n_episodes_TS + 1):
         print(f"\n--- Episode {episode} ---")
@@ -102,6 +109,8 @@ def run_thompson_sampling(seeds):
 
         # 2. Sample from each posterior
         sampled_times = [r.sample_expected_travel_time(n_samples=1) for r in routes]
+        result = prepare_data(sampled_tt_routes=sampled_times)
+        accumulate_results(results, result)
         print(f"\t- Sampled mean travel times of routes: {sampled_times}")
 
         # 3. Choose route that maximizes reward
@@ -119,6 +128,9 @@ def run_thompson_sampling(seeds):
 
     # 6. Generate plot comparing post mean obtained after convergence with the true means
     plot_convergence_post_mean_meantt(R=routes)
+
+    # 7. Save output
+    save_processed_data(results)
 
 
 def plot_posterior_distributions_avg_tt(i, routes, n_samples):

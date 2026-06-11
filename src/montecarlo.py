@@ -6,7 +6,8 @@ from scipy.stats import skew
 
 from config import config
 from environment import Environment
-from paths import REWARD_DISTRIBUTIONS_DIR, TRAVEL_TIMES_MONTECARLO
+from experiment import rm_files_dir
+from paths import MONTECARLO_DIR, TRAVEL_TIMES_MONTECARLO
 from scenario import Scenario
 
 
@@ -18,16 +19,21 @@ def approximate_travel_times_distribution(seeds):
 
     print("\nMonte Carlo Approximation of travel time distributions\n")
 
+    # 1. Remove files in folder where MonteCarlo data will be saved
+    rm_files_dir(TRAVEL_TIMES_MONTECARLO)
+
+    # 2. Remove files in folder where plots will be saved
+    rm_files_dir(MONTECARLO_DIR)
+
     # For each route
     for idx_route, _ in enumerate(config.routes):
         print(f"####### Route {idx_route} #######\n")
+
         # 1. Generate samples from travel time distribution
         travel_times = generate_montecarlo_simulations(idx_route, seeds)
 
         # 2. Generate plot (histogram + KDE)
-        path_hist = (
-            REWARD_DISTRIBUTIONS_DIR / config.name_network / f"route_{idx_route}.png"
-        )
+        path_hist = MONTECARLO_DIR / f"{config.name_network}_route_{idx_route}.png"
         plot_histogram_and_kde_tt(travel_times, path=path_hist, idx_route=idx_route)
 
 
@@ -55,8 +61,7 @@ def generate_montecarlo_simulations(idx_route, seeds):
     )
     path_df = (
         TRAVEL_TIMES_MONTECARLO
-        / config.name_network
-        / f"tt_MonteCarlo_route{idx_route}.parquet"
+        / f"{config.name_network}_tt_MC_route{idx_route}.parquet"
     )
     df.to_parquet(path_df)
     return travel_times
@@ -93,8 +98,8 @@ def plot_histogram_and_kde_tt(tt, path, idx_route):
 
     # 7. Configure title
     plt.title(
-        f"Route {idx_route} travel time distribution\n"
-        f"(Monte Carlo approximation using {config.n_episodes_MC} simulations"
+        f"{config.name_network} Network - Route {idx_route}\n"
+        f"Travel-time distribution"
     )
 
     # 8. Remove legend
