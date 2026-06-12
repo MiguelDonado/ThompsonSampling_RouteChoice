@@ -7,6 +7,18 @@ from paths import CONVERGENCE_POST_MEANS, REGRET_PARQUET
 true_means = (78.48, 80.13)
 posterior_means = (78.32, 80.31)
 
+plt.rcParams.update(
+    {
+        "font.size": 18,  # default text size
+        "axes.titlesize": 22,  # title
+        "axes.labelsize": 20,  # x/y labels
+        "xtick.labelsize": 18,  # x tick labels
+        "ytick.labelsize": 18,  # y tick labels
+        "legend.fontsize": 18,
+        "lines.linewidth": 2,
+    }
+)
+
 
 def plot_convergence_post_mean_meantt(true_means, posterior_means):
     """
@@ -57,16 +69,16 @@ def plot_cumulative_route_selection_frequencies():
 
     plt.xlabel("Episode")
     plt.ylabel("Cumulative selection frequency")
-    plt.title("Toy network\nCumulative route selection frequencies")
+    plt.title("Sioux Falls network\nCumulative route selection frequencies")
     plt.legend()
     plt.grid(True)
 
     plt.savefig(
-        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Toy_cumulative_RSF.pdf",
+        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Sioux_Falls_cumulative_RSF.pdf",
         bbox_inches="tight",
     )
     plt.savefig(
-        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Toy_cumulative_RSF.png",
+        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Sioux_Falls_cumulative_RSF.png",
         bbox_inches="tight",
         dpi=300,
     )
@@ -103,3 +115,67 @@ def prepare_data_cumulative_route_selection_frequencies():
 
 
 plot_cumulative_route_selection_frequencies()
+
+
+def plot_cumulative_regret():
+    df = pd.read_parquet(REGRET_PARQUET)
+
+    plt.figure(figsize=(8, 5))
+
+    plt.plot(
+        df["episode"],
+        df["cumulative_regret"],
+    )
+
+    plt.xlabel("Episode")
+    plt.ylabel("Cumulative regret")
+    plt.title("Toy network\nCumulative regret")
+
+    plt.savefig(
+        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Toy_cumulative_regret.pdf",
+        bbox_inches="tight",
+    )
+
+    plt.savefig(
+        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Toy_cumulative_regret.png",
+        bbox_inches="tight",
+        dpi=300,
+    )
+
+    plt.close()
+
+
+# plot_cumulative_regret()
+
+
+def plot_avg_regret():
+    df = pd.read_parquet(REGRET_PARQUET)
+
+    plt.figure(figsize=(8, 5))
+
+    df["average_regret"] = df["cumulative_regret"] / df["episode"]
+
+    plt.plot(
+        df["episode"],
+        df["average_regret"],
+    )
+
+    plt.xlabel("Episode")
+    plt.ylabel("Average regret")
+    plt.title("Sioux Falls network\nAverage regret per episode")
+
+    plt.savefig(
+        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Sioux_Falls_avg_regret.pdf",
+        bbox_inches="tight",
+    )
+
+    plt.savefig(
+        "/home/miguel/6.Projects/BayesianFinalProject/report/media/DefinitiveTS/Sioux_Falls_avg_regret.png",
+        bbox_inches="tight",
+        dpi=300,
+    )
+
+    plt.close()
+
+
+# plot_avg_regret()
