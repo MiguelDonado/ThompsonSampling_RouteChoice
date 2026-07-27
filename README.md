@@ -22,5 +22,7 @@ The objective of this project is to investigate how Bayesian learning can be use
 
 ## Paper
 
-The accompanying paper is available in [![Paper Preview](report/PreviewPaper.png)](report/FinalReport.pdf).
+The accompanying paper is presented below
+
+[![Paper Preview](report/PreviewPaper.png)](report/FinalReport.pdf).
 
